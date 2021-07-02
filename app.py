@@ -32,8 +32,8 @@ def insertUser(username, email, password, contact):
     phone = int(contact)
     query = ("""INSERT INTO SignUP
              (username,email,password,contact)
-             VALUES ('%s','%s','%s',%s)""" %
-             (username, email, password, contact))
+             VALUES ('%s','%s','%s',%d)""" %
+             (username, email, password, phone))
     cur.execute(query)
     con.commit()
     con.close()
@@ -64,7 +64,7 @@ def home111():
     return render_template('login_1.html')
 
 # Login page
-@app.route('/login_1', methods=['GET', 'POST'])
+@app.route('/signin/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         rd = validUser(request.form['email'], request.form['password'])
@@ -76,6 +76,11 @@ def login():
             return render_template('login_1.html',msg=msg)
     else:
         return render_template('login_1.html')
+
+@app.route('/signin/logout')
+def logout():
+	session.pop('user', None)
+	return render_template('login_1.html')
     
     
 @app.route('/logout')
